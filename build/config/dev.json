@@ -1,0 +1,8 @@
+{
+  "logging": "dev",
+  "port": 4200,
+  "mountpoint": "/",
+  "database": {
+     "url":"mongodb://localhost:27017/rentify"
+  }
+}
