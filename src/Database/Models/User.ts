@@ -16,7 +16,7 @@ export interface MUser extends IUser, Document {
     JSONRepr: () => any;
 }
 
-const userSchema = new Schema({
+const userSchema: RelationSchema = new Schema({
     full_name: String,
     email: String,
     oid: String,
