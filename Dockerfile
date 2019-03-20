@@ -10,9 +10,11 @@ COPY . ./
 
 RUN npm run build
 
-ENV NODE_ENV production
+COPY ./config ./build/config
 
-ENV TZ "Europe/Brussels"
+ENV NODE_ENV prod
+
+ENV TZ 'Europe/Brussels'
 
 EXPOSE 3000
 
