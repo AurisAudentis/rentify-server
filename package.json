@@ -6,7 +6,9 @@
     "nbstart": "node build/index.js",
     "start": "npm run build && node build/index.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive test",
-    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig2.json"
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig2.json",
+    "createdb": "npm run build && node build/CreateDatabase.js",
+    "cleardb": "npm run build && node build/ClearDatabase.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",

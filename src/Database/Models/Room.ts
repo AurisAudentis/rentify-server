@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose"
+import { Models } from "../../Infrastructure/MongoHelper";
 
 
 export interface IRoom {
@@ -12,9 +12,15 @@ export interface MRoom extends IRoom, Document {
     JSONRepr: () => any;
 }
 
-const roomSchema = new Schema({
+const roomSchema = {
     address: String,
     //Groups
-})
+}
 
-export const ModelRoom = model<MRoom>("Room", roomSchema);
+export const roomRelationSchema = {
+    schema: roomSchema,
+    name: "room",
+    relations: []
+}
+
+export const ModelRoom = () => Models["room"];
