@@ -1,4 +1,4 @@
-import { Models } from "../../Infrastructure/MongoHelper";
+import { Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
 
 
 export interface IRoom {
@@ -19,8 +19,10 @@ const roomSchema = {
 
 export const roomRelationSchema = {
     schema: roomSchema,
-    name: "room",
-    relations: []
+    name: "Room",
+    relations: [
+        {subject: "Group", fieldlocal:"groups", fieldother: "room", kind: RelationKind.Many, delete: DeleteKind.Relation},
+    ]
 }
 
-export const ModelRoom = () => Models["room"];
+export const ModelRoom = () => Models["Room"];

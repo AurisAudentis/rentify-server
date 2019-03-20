@@ -1,4 +1,5 @@
-import {Schema, model} from "mongoose"
+import { MGroup } from "./Group";
+import { RelationSchema, Models } from "../../Infrastructure/MongoHelper";
 
 export interface IIssue {
     issue_title: String,
@@ -6,7 +7,7 @@ export interface IIssue {
     fotos: Array<File>,
     description: String,
     created_at: Date
-
+    groups?: Array<MGroup>
 }
 
 export interface MIssue extends IIssue, Document {
@@ -14,12 +15,20 @@ export interface MIssue extends IIssue, Document {
     JSONRepr: () => any;
 }
 
-const issueSchema = new Schema({
+const issueSchema = {
     description: String,
     issue_title: String,
     state: Boolean,
     fotos: [{data: Buffer, contentType: String}],
     created_at: Date
-})
+}
 
-export const ModelGroup = model<MIssue>("Issue", issueSchema);
+
+export const issueRelationSchema: RelationSchema = {
+    name: "Issue",
+    schema: issueSchema,
+    relations: [
+    ]
+}
+
+export const ModelGroup = () => Models["Issue"];

@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose"
+import { RelationSchema, Models } from "../../Infrastructure/MongoHelper";
 
 
 export interface IEvent {
@@ -12,11 +12,16 @@ export interface MEvent extends IEvent, Document {
     JSONRepr: () => any;
 }
 
-const eventSchema = new Schema({
+const eventSchema = {
     description: String,
-    //Maintainers
-    //Issues
-    //events
-})
+}
 
-export const ModelEvent = model<MEvent>("Event", eventSchema);
+
+export const eventRelationSchema: RelationSchema = {
+    name: "Event",
+    schema: eventSchema,
+    relations: [
+    ]
+}
+
+export const ModelEvent = () => Models["Event"];

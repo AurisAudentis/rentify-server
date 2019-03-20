@@ -1,4 +1,5 @@
 import { RelationSchema, Models, DeleteKind, RelationKind } from "../../Infrastructure/MongoHelper";
+import { roomRelationSchema, MRoom } from "./Room";
 
 
 export interface IUser {
@@ -7,7 +8,7 @@ export interface IUser {
     email: String,
     created_at: Date,
     phonenum: String,
-    //Rooms
+    rooms?: MRoom;
 
 }
 
@@ -27,8 +28,10 @@ const userSchema = {
 
 export const userRelationSchema: RelationSchema = {
     schema: userSchema,
-    name: "user",
-    relations: [{subject: "room", fieldlocal: "rooms", fieldother: "user", kind: RelationKind.Many, delete: DeleteKind.Relation}]
+    name: "User",
+    relations: [
+        {subject: "Room", fieldlocal: "rooms", fieldother: "users", kind: RelationKind.Many, delete: DeleteKind.Relation}
+    ]
 }
 
 export const ModelUser = () => Models["user"];
