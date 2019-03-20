@@ -4,5 +4,5 @@ services:
     build: .
     ports:
       - "4200:4200"
-  mongodb:
+  modb:
     image: "mongo:4.0-xenial"
