@@ -2,7 +2,7 @@ import {connect} from "mongoose";
 import { logger } from "../Infrastructure/Logger";
 import { app } from "../app";
 import config from "../../config/config";
-import { createRelations } from "../Infrastructure/MongoHelper";
+import { createRelations, Models } from "../Infrastructure/MongoHelper";
 import { userRelationSchema } from "./Models/User";
 import { roomRelationSchema } from "./Models/Room";
 import { eventRelationSchema } from "./Models/Event";

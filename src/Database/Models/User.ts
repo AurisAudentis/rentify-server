@@ -34,4 +34,4 @@ export const userRelationSchema: RelationSchema = {
     ]
 }
 
-export const ModelUser = () => Models["user"];
+export const ModelUser = () => Models["User"];

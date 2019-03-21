@@ -1,8 +1,11 @@
 {
   "logging": "dev",
   "port": 4200,
-  "mountpoint": "/",
+  "mountpoint": "/api",
   "database": {
     "url":"mongodb://modb:27017/rentify"
+  },
+  "oauth": {
+    "url": "https://maxiemgeldhof.com/oauth"
   }
 }

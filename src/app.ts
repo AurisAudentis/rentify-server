@@ -6,6 +6,9 @@ import {indexRouter} from "./Routers";
 import config from "../config/config";
 import {logger} from "./Infrastructure/Logger";
 import { connectMongo } from "./Database/handler";
+import passport = require("passport");
+import { bearerStrategy } from "./Auth/BearerStrategy";
+import { authRouter } from "./Routers/AuthRouter";
 
 
 export class app {
@@ -18,12 +21,12 @@ export class app {
 
     public launch(port: number) {
         this.setup();
-        this.routers();
+        this.routes();
         this.instance = this.app.listen(port);
         connectMongo(this);
         logger.info(`Started server at port ${port}.`)
     }
-hhhhggbb
+
     public exit(){
         if (this.instance){
             this.instance.close();
@@ -35,6 +38,7 @@ hhhhggbb
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(cookieParser());
+        this.initAuth()
     }
 
     private debugLogging() {
@@ -45,8 +49,14 @@ hhhhggbb
         this.app.use(morgan('combined', { skip: function(req, res) { return res.statusCode < 400 }, stream: {write: message => logger.info(message.trim())} }));
     }
 
-    private routers(): void {
-        this.app.use('/', indexRouter);
+    private routes(): void {
+        this.app.use(`${config.mountpoint}/auth`, authRouter);
+        this.app.use(`${config.mountpoint}/`, indexRouter);
+    }
+
+    private initAuth(): void {
+        this.app.use(passport.initialize());
+        passport.use(bearerStrategy);
     }
 }
 
