@@ -1,5 +1,5 @@
 import { RelationSchema, Models, DeleteKind, RelationKind } from "../../Infrastructure/MongoHelper";
-import { roomRelationSchema, MRoom } from "./Room";
+import { MRoom } from "./Room";
 
 
 export interface IUser {
@@ -8,12 +8,13 @@ export interface IUser {
     email: String,
     created_at: Date,
     phonenum: String,
-    rooms?: MRoom;
-
+    rooms?: Array<MRoom>;
 }
 
 export interface MUser extends IUser, Document {
-
+    getRooms(): Promise<MUser>;
+    save();
+    addRoom(room: MRoom);
     JSONRepr: () => any;
 }
 
@@ -31,7 +32,15 @@ export const userRelationSchema: RelationSchema = {
     name: "User",
     relations: [
         {subject: "Room", fieldlocal: "rooms", fieldother: "users", kind: RelationKind.Many, delete: DeleteKind.Relation}
-    ]
+    ],
+    schemafunc: (schema) => {
+        schema.methods.addRoom = function(room) {
+            const user = this as MUser;
+
+            user.rooms.push(room);
+            return user.save()
+        }
+    }
 }
 
 export const ModelUser = () => Models["User"];

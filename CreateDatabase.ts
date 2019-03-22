@@ -2,7 +2,6 @@ import { connectMongo } from "./src/Database/handler";
 import { ModelUser } from "./src/Database/Models/User";
 import { ModelRoom } from "./src/Database/Models/Room";
 import { disconnect } from "mongoose";
-import { promiselog } from "./src/Infrastructure/Misc/PromiseHelper";
 
 
 connectMongo(null)
@@ -14,8 +13,7 @@ connectMongo(null)
             ModelRoom().create({address: "some place 2"})
                 .then(room2 => ModelUser().create({full_name:"John", oid: "5d8ad07e-fd57-4822-af9b-ffadb4e83a78", email:"some email", created_at: new Date(), phonenum: "some num", rooms: [room, room2]})
                     .then(() => room.getUsers())
-                    .then(() => room.remove())
-                    .then(() => room2.remove()))
+                    .then(() => room.remove()))
         
     )})
     .then(() => disconnect())

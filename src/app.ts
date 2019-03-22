@@ -9,6 +9,7 @@ import { connectMongo } from "./Database/handler";
 import passport = require("passport");
 import { bearerStrategy } from "./Auth/BearerStrategy";
 import { authRouter } from "./Routers/AuthRouter";
+import { issueRouter } from "./Routers/IssueRouter";
 
 
 export class app {
@@ -52,6 +53,7 @@ export class app {
     private routes(): void {
         this.app.use(`${config.mountpoint}/auth`, authRouter);
         this.app.use(`${config.mountpoint}/`, indexRouter);
+        this.app.use(`${config.mountpoint}/issues`, issueRouter);
     }
 
     private initAuth(): void {
