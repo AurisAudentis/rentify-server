@@ -5,7 +5,8 @@ localurl = "http://localhost:4200"
 
 
 def fetchToken(mail, password):
-    r = requests.post(oauthurl + "/oauth/token", data={"mail": "maxiem@maxiemgeldhof.com", "pw":"e8e85cmc"})
+    r = requests.post(oauthurl + "/oauth/token", data={"email": mail, "pw":password})
+    print(r.json())
     token = r.json()["jwt"]
     return token
 
@@ -14,10 +15,11 @@ def getHeader(token):
 
 def registerBackend(mail, password):
     r = requests.post(oauthurl + "/oauth/sso/register", data={"email": mail, "password": password})
+    print(r.json())
     return r.json()["uid"]
 
 
-email = "random6@rand.be"
+email = "random16@rand.be"
 password = "random_password"
 uid = registerBackend(email, password)
 

@@ -11,6 +11,7 @@ needle("get", `${config.oauth.url}/key`)
 export const bearerStrategy = new BearerStrategy(
     ((token, done) => {
         verify(token, key, (err, decoded) => {
+            console.log(decoded)
             if (err) {done({name: "JWTExpiredErr", message: "The JWT is expired", status: 401}); return;}
             ModelUser().findOne({oid: decoded.uid})
                 .exec()
