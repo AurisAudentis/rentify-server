@@ -133,7 +133,6 @@ function addGetterAsReceiver(schema: RelationSchema) {
         schema.schema.methods["get" + capitalize(rel.fieldother)] = function() {
             const doc = this;
             return Models[rel.subject].find({[rel.fieldlocal]: doc.id}).exec()
-                .then(promiselog)
                 .then(origin => rel.kind == RelationKind.One ? origin[0]:origin)
                 .then(origin => {doc[rel.fieldother] = origin})
                 .then(() => doc)

@@ -4,7 +4,6 @@ import needle = require("needle");
 import config from "../../config/config";
 import { ModelUser } from "../Database/Models/User";
 import { logger } from "../Infrastructure/Logger";
-import { promiselog } from "../Infrastructure/Misc/PromiseHelper";
 
 let key;
 needle("get", `${config.oauth.url}/key`)
@@ -14,11 +13,9 @@ needle("get", `${config.oauth.url}/key`)
 export const bearerStrategy = new BearerStrategy(
     ((token, done) => {
         verify(token, key, (err, decoded) => {
-            console.log(err, decoded)
             if (err) {done({name: "JWTExpiredErr", message: "The JWT is expired", status: 401}); return;}
             ModelUser().findOne({oid: decoded.uid})
                 .exec()
-                .then(promiselog)
                 .then(user => done(null, user))
                 .catch(err => {console.log(err); done(err)})
         })

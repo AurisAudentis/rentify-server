@@ -39,10 +39,8 @@ export function getIssues(user: MUser) {
 
 export function getIssuesAsRentee(user: MUser) {
     return user.getRooms()
-    .then(promiselog)
     .then(user => mapPromise(user.rooms, room => room.getGroups()))
     .then(() => mapPromise(user.rooms, room => mapPromise(room.groups, group => group.getIssues())))
-    .then(() => console.log(user))
+    .then(array => array.reduce((prev, curr) => prev.concat(curr), []))
 }
-
 export const ModelIssue = () => Models["Issue"];

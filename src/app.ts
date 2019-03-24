@@ -10,6 +10,8 @@ import passport = require("passport");
 import { bearerStrategy } from "./Auth/BearerStrategy";
 import { authRouter } from "./Routers/AuthRouter";
 import { issueRouter } from "./Routers/IssueRouter";
+import { roomRouter } from "./Routers/RoomRouter";
+import { groupRouter } from "./Routers/GroupRouter";
 
 
 export class app {
@@ -54,6 +56,8 @@ export class app {
         this.app.use(`${config.mountpoint}/auth`, authRouter);
         this.app.use(`${config.mountpoint}/`, indexRouter);
         this.app.use(`${config.mountpoint}/issues`, issueRouter);
+        this.app.use(`${config.mountpoint}/rooms`, roomRouter);
+        this.app.use(`${config.mountpoint}/groups`, groupRouter)
     }
 
     private initAuth(): void {

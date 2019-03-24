@@ -1,11 +1,7 @@
 export function handleError(res, err) {
-    res.format({
-        html: () => res.render("error.ejs", {error: err}),
-        json: () => {
-            res.status(err.status);
-            res.json(err.message);
-        }
-    })
+
+        res.status(err.status);
+        res.json(err.message);
 
 }
 
@@ -18,4 +14,13 @@ export function throwOnNull<T>(obj: T, message?):  T {
 
 export function throwNoJSON(req, res) {
     return res.status(406).send('["text/html"]').end()
+}
+
+export function throwOnIllegalSave(err) {
+    console.log(err);
+    if(!err.status) {
+        throw {status: 400, message:"Your objects are invalid."}
+    } else {
+        throw err;
+    }
 }

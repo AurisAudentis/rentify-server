@@ -21,7 +21,6 @@ export const roomRelationSchema = {
     schema: roomSchema,
     name: "Room",
     relations: [
-        {subject: "Group", fieldlocal:"groups", fieldother: "room", kind: RelationKind.Many, delete: DeleteKind.Relation},
     ]
 }
 

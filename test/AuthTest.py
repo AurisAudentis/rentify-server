@@ -29,8 +29,8 @@ email = "random43@rand.be"
 password = "random_password"
 uid = "b6cd6a0a-9682-4c22-92c8-59e641bdcc7c"
 
-r = requests.put(localurl + "/auth/register", 
-    data={"mail": email, "oid": uid, "full_name":"Joris Landuyt", "phonenum":"0456789865"})
+# r = requests.put(localurl + "/auth/register", 
+#     data={"mail": email, "oid": uid, "full_name":"Joris Landuyt", "phonenum":"0456789865"})
 
 # fetchToken(email, password)
 # print(getHeader(fetchTokenByRefr(email, refresh)))

@@ -1,4 +1,3 @@
-import {Schema, model} from "mongoose"
 import { RelationSchema, DeleteKind, RelationKind, Models } from "../../Infrastructure/MongoHelper";
 import { MIssue } from "./Issue";
 import { MUser } from "./User";
@@ -31,7 +30,8 @@ export const groupRelationSchema: RelationSchema = {
     relations: [
         {subject: "User", fieldlocal:"maintainers", fieldother: "groups", kind: RelationKind.Many, delete: DeleteKind.Relation},
         {subject: "Issue", fieldlocal:"issues", fieldother: "groups", kind: RelationKind.Many, delete: DeleteKind.Relation},
-        {subject: "Event", fieldlocal:"events", fieldother: "groups", kind: RelationKind.Many, delete: DeleteKind.Relation}
+        {subject: "Event", fieldlocal:"events", fieldother: "groups", kind: RelationKind.Many, delete: DeleteKind.Relation},
+        {subject: "Room", fieldlocal:"rooms", fieldother: "groups", kind: RelationKind.Many, delete: DeleteKind.Relation},
     ]
 }
 
