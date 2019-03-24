@@ -1,5 +1,5 @@
 import passport = require("passport");
-import { getById } from "../Infrastructure/Misc/PromiseHelper";
+import { getById, mapPromise } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelRoom } from "../Database/Models/Room";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
 
@@ -16,8 +16,8 @@ roomRouter.post("/:id/users", (req, res) => {
             if(room.users.length > 0) {
                 throw {status: 400, message:"This room is already filled."}
             } else {
-                room.users.push(req.user);
-                return room.save();
+                req.user.rooms.push(room)
+                return req.user.addRoom(room).then(() => room);
             }
         })
         .then(room => res.json({...room, users: room.users}))
@@ -27,6 +27,7 @@ roomRouter.post("/:id/users", (req, res) => {
 roomRouter.delete("/:id/users", (req, res) => {
     return getById(ModelRoom(), req.params.id)
         .then(room => room.getGroups())
+        .then(room => room.getUsers())
         .then(room => {
             const maintainers = room.groups.reduce((prev, last) => prev.concat(last.maintainers), []);
 
@@ -34,8 +35,8 @@ roomRouter.delete("/:id/users", (req, res) => {
                 throw {status: 401, message: "You are not a maintainer"}
             }
 
-            room.users = [];
-            return room.save();
+            console.log(room.users)
+            return mapPromise(room.users, user => user.removeRoom(room)).then(() => room)
         })
         .catch(throwOnIllegalSave)
         .then(room => res.json({...room.toJSON(), users: room.users}))

@@ -3,6 +3,7 @@ import { ModelRoom } from "../Database/Models/Room";
 import { mapPromise, getById } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelGroup } from "../Database/Models/Group";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
+import { MUser } from "../Database/Models/User";
 
 const express = require('express');
 export const groupRouter = express.Router();
@@ -41,5 +42,21 @@ groupRouter.put("/:id/rooms", (req, res) => {
         })
         .then((group) => res.json(group))
         .catch(throwOnIllegalSave)
+        .catch(err => handleError(res, err))
+})
+
+groupRouter.get("/", (req, res) => {
+    const user: MUser = req.user;
+    return user.getGroups()
+        .then(user => user.getRooms())
+        .then(user => mapPromise(user.rooms, room => room.getGroups()))
+        .then(() => {
+            console.log(user.rooms)
+            const renteegroups = user.rooms.reduce((prev, curr) => prev.concat(curr.groups), [])
+            res.json({
+                "tenant": renteegroups,
+                "landlord": user.groups
+            })
+        })
         .catch(err => handleError(res, err))
 })

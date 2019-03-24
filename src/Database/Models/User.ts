@@ -1,5 +1,6 @@
 import { RelationSchema, Models, DeleteKind, RelationKind } from "../../Infrastructure/MongoHelper";
 import { MRoom } from "./Room";
+import { MGroup } from "./Group";
 
 
 export interface IUser {
@@ -9,9 +10,11 @@ export interface IUser {
     created_at: Date,
     phonenum: String,
     rooms?: Array<MRoom>;
+    groups?: Array<MGroup>
 }
 
 export interface MUser extends IUser, Document {
+    getGroups(): Promise<MUser>
     getRooms(): Promise<MUser>;
     save();
     addRoom(room: MRoom);
@@ -38,6 +41,14 @@ export const userRelationSchema: RelationSchema = {
             const user = this as MUser;
 
             user.rooms.push(room);
+            return user.save()
+        }
+
+        schema.methods.removeRoom = function(room){
+            const user = this as MUser;
+            console.log(user.rooms[0], room.id, user.rooms[0] == room.id)
+            user.rooms = user.rooms.filter(id => id != room.id)
+            console.log(user.rooms)
             return user.save()
         }
     }

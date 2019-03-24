@@ -1,9 +1,10 @@
 import { Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
+import { MGroup } from "./Group";
 
 
 export interface IRoom {
     address: String,
-    //Groups
+    groups?: Array<MGroup>
 
 }
 
