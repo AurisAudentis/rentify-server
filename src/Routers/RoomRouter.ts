@@ -20,7 +20,7 @@ roomRouter.post("/:id/users", (req, res) => {
                 return req.user.addRoom(room).then(() => room);
             }
         })
-        .then(room => res.json({...room, users: room.users}))
+        .then(room => res.json({...room.toJSON(), users: room.users}))
         .catch(err => handleError(res, err))
 })
 
@@ -35,7 +35,6 @@ roomRouter.delete("/:id/users", (req, res) => {
                 throw {status: 401, message: "You are not a maintainer"}
             }
 
-            console.log(room.users)
             return mapPromise(room.users, user => user.removeRoom(room)).then(() => room)
         })
         .catch(throwOnIllegalSave)

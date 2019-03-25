@@ -51,7 +51,6 @@ groupRouter.get("/", (req, res) => {
         .then(user => user.getRooms())
         .then(user => mapPromise(user.rooms, room => room.getGroups()))
         .then(() => {
-            console.log(user.rooms)
             const renteegroups = user.rooms.reduce((prev, curr) => prev.concat(curr.groups), [])
             res.json({
                 "tenant": renteegroups,

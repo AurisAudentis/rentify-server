@@ -17,7 +17,6 @@ r = requests.put(f"http://localhost:4200/groups/{gid}/rooms", headers=header, js
 print(r.json())
 
 
-print("about to delete")
 r = requests.delete(f"http://localhost:4200/rooms/{rid}/users", headers=header)
 print(r.text)
 

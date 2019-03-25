@@ -1,15 +1,16 @@
 import { MGroup } from "./Group";
-import { RelationSchema, Models } from "../../Infrastructure/MongoHelper";
+import { RelationSchema, Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
 import { MUser } from "./User";
 import { mapPromise, promiselog } from "../../Infrastructure/Misc/PromiseHelper";
 
 export interface IIssue {
     issue_title: String,
-    state: Boolean,
+    state: Number,
     fotos: Array<File>,
     description: String,
     created_at: Date
-    groups?: Array<MGroup>
+    groups?: Array<MGroup>,
+    author: MUser
 }
 
 export interface MIssue extends IIssue, Document {
@@ -20,7 +21,7 @@ export interface MIssue extends IIssue, Document {
 const issueSchema = {
     description: String,
     issue_title: String,
-    state: Boolean,
+    state: Number,
     fotos: [{data: Buffer, contentType: String}],
     created_at: Date
 }
@@ -30,12 +31,10 @@ export const issueRelationSchema: RelationSchema = {
     name: "Issue",
     schema: issueSchema,
     relations: [
+        {subject: "User", fieldlocal: "author", fieldother: "issues", kind: RelationKind.One, delete: DeleteKind.Relation}
     ]
 }
 
-export function getIssues(user: MUser) {
-
-}
 
 export function getIssuesAsRentee(user: MUser) {
     return user.getRooms()

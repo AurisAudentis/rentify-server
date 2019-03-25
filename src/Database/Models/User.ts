@@ -46,9 +46,7 @@ export const userRelationSchema: RelationSchema = {
 
         schema.methods.removeRoom = function(room){
             const user = this as MUser;
-            console.log(user.rooms[0], room.id, user.rooms[0] == room.id)
             user.rooms = user.rooms.filter(id => id != room.id)
-            console.log(user.rooms)
             return user.save()
         }
     }

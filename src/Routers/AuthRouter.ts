@@ -7,7 +7,6 @@ export const authRouter = express.Router();
 
 // TODO: validation
 authRouter.put("/register", (req, res) => {
-    console.log("hit")
     const user: IUser = {
         full_name: req.body.fullname || req.body.full_name,
         oid: req.body.oid,          // We should really validate this...
