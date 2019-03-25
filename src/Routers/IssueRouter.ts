@@ -24,7 +24,6 @@ issueRouter.get("/:gid", (req, res) => {
             )
         .then((group) => {
             const byId = {}
-            console.log(group.issues)
             group.issues.forEach(issue => byId[issue.id] = issue)
             res.json(byId);
         })
