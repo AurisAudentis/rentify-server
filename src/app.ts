@@ -12,6 +12,7 @@ import { authRouter } from "./Routers/AuthRouter";
 import { issueRouter } from "./Routers/IssueRouter";
 import { roomRouter } from "./Routers/RoomRouter";
 import { groupRouter } from "./Routers/GroupRouter";
+import { userRouter } from "./Routers/UserRouter";
 
 
 export class app {
@@ -57,7 +58,8 @@ export class app {
         this.app.use(`${config.mountpoint}/`, indexRouter);
         this.app.use(`${config.mountpoint}/issues`, issueRouter);
         this.app.use(`${config.mountpoint}/rooms`, roomRouter);
-        this.app.use(`${config.mountpoint}/groups`, groupRouter)
+        this.app.use(`${config.mountpoint}/groups`, groupRouter);
+        this.app.use(`${config.mountpoint}/users`, userRouter)
     }
 
     private initAuth(): void {

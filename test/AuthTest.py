@@ -25,10 +25,10 @@ def registerBackend(mail, password):
     return r.json()["uid"]
 
 
-email = "random45@rand.be"
-password = "random_password"
+email = "fill@filler.com"
+password = "rentify"
 #uid = "b6cd6a0a-9682-4c22-92c8-59e641bdcc7c"
-uid = "363dc338-ecb9-4e4a-be14-97be90da2d4e"
+uid = "1d4ddef8-5019-466a-8c05-0e496825829c"
 
 
 # r = requests.put(localurl + "/auth/register", 
