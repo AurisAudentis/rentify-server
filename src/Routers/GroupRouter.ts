@@ -59,3 +59,10 @@ groupRouter.get("/", (req, res) => {
         })
         .catch(err => handleError(res, err))
 })
+
+groupRouter.get("/:gid/rooms", (req, res) => {
+    return getById(ModelGroup(), req.params.id)
+                .then(group => group.getRooms())
+                .then(group => res.json(group.rooms))
+                .catch(err => handleError(res, err))
+})

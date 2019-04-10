@@ -1,6 +1,6 @@
 import passport = require("passport");
-import { getIssuesAsRentee, IIssue, ModelIssue } from "../Database/Models/Issue";
-import { ModelGroup, groupRelationSchema, MGroup } from "../Database/Models/Group";
+import { IIssue, ModelIssue } from "../Database/Models/Issue";
+import { ModelGroup, MGroup } from "../Database/Models/Group";
 import { getById } from "../Infrastructure/Misc/PromiseHelper";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
 
