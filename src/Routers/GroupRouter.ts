@@ -63,7 +63,7 @@ groupRouter.get("/", (req, res) => {
 groupRouter.get("/:gid/rooms", (req, res) => {
     return getById(ModelGroup(), req.params.gid)
                 .then(group => group.getRooms())
-                .then(group => mapPromise(group.rooms, room => room.getUsers().then(() => group)))
+                .then(group => mapPromise(group.rooms, room => room.getUsers()).then(() => group))
                 .then(group => res.json(group.rooms))
                 .catch(err => handleError(res, err))
 })
