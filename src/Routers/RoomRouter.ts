@@ -44,7 +44,7 @@ roomRouter.delete("/:id/users", (req, res) => {
 
 roomRouter.get("/", (req, res) => {
     return ModelRoom().find({})
-        .then(rooms => rooms.map(room => room.getUsers()))
+        .then(rooms => mapPromise(rooms, room => room.getUsers()))
         .then(rooms => res.json(rooms))
         .catch(err => handleError(res, err))
 })
