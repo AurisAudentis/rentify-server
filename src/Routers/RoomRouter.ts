@@ -54,5 +54,5 @@ roomRouter.post("/", (req, res) => {
     return ModelRoom()
             .create({address: req.body.address})
             .then(room => res.send(room))
-            .catchError(err => handleError(res, err))
+            .catch(err => handleError(res, err))
 })
