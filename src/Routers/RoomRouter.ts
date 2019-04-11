@@ -51,8 +51,19 @@ roomRouter.get("/", (req, res) => {
 
 // TODO: add validation
 roomRouter.post("/", (req, res) => {
-    return ModelRoom()
-            .create({address: req.body.address})
+    if(req.body.addresses) {
+        return mapPromise(req.body.addresses, address => createRoom(address))
             .then(room => res.send(room))
             .catch(err => handleError(res, err))
+    } else {
+        return createRoom(req.body.address)
+            .then(room => res.send(room))
+            .catch(err => handleError(res, err))
+    }
+    
 })
+
+function createRoom(address) {
+    return ModelRoom()
+    .create({address: address})
+}
