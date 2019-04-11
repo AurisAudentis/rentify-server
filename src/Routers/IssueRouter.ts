@@ -34,6 +34,7 @@ issueRouter.post("/group/:gid", (req, res) => {
     const issue:IIssue = {
         description: req.body.description,
         issue_title: req.body.issue_title,
+        isPrivate: req.body.isPrivate,
         fotos: [],
         state: 0,
         created_at: new Date(),

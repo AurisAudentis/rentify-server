@@ -8,7 +8,8 @@ export interface IIssue {
     state: Number,
     fotos: Array<File>,
     description: String,
-    created_at: Date
+    created_at: Date,
+    isPrivate: boolean
     groups?: Array<MGroup>,
     author: MUser
 }
@@ -22,6 +23,7 @@ const issueSchema = {
     description: String,
     issue_title: String,
     state: Number,
+    isPrivate: Boolean,
     fotos: [{data: Buffer, contentType: String}],
     created_at: Date
 }
