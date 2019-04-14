@@ -1,7 +1,7 @@
 import passport = require("passport");
 import { ModelUser } from "../Database/Models/User";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
-import { promiselog, mapPromise } from "../Infrastructure/Misc/PromiseHelper";
+import { promiselog, mapPromise, getById } from "../Infrastructure/Misc/PromiseHelper";
 
 const express = require('express');
 export const userRouter = express.Router();
@@ -21,4 +21,10 @@ userRouter.get("/landlords", (req, res) => {
         .then(users => users.filter(user => user.groups.length > 0))
         .then(users => res.json(users))
         .catch(err => handleError(res, err))
+})
+
+userRouter.get("/landlords/:uid/groups", (req, res) => {
+    getById(ModelUser(), req.params.uid)
+        .then(user => user.getGroups())
+        .then(user => res.send(user.groups))
 })
