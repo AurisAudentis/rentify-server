@@ -46,7 +46,7 @@ roomRouter.get("/", (req, res) => {
     return req.user.getRooms()
         .then(user => mapPromise(user.rooms, room => room.getUsers()))
         .then(rooms => mapPromise(rooms, room => room.getGroups()))
-        .then(rooms => res.json(rooms.map(room => ({...room, group: room.groups[0] ? room.groups[0]._id:null}))))
+        .then(rooms => res.json(rooms.map(room => ({...room.toJSON(), group: room.groups[0] ? room.groups[0]._id:null}))))
         .catch(err => handleError(res, err))
 })
 
