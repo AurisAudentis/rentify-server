@@ -23,9 +23,9 @@ groupRouter.post("/", (req, res) => {
         group.maintainers.push(req.user._id);
     }
 
-    return mapPromise(req.body.rooms.map(address => {address}), (room => ModelRoom().create(room)))
+    return mapPromise(req.body.rooms.map(address => {address}), (room => ModelRoom().create(room).exec()))
         .then((rooms: Array<MRoom>) => {
-            group.rooms = rooms.map(room => room._id);
+            group.rooms = rooms
             console.log(group.rooms);
             return ModelGroup().create(group);
         })
