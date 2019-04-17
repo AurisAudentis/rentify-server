@@ -26,6 +26,7 @@ groupRouter.post("/", (req, res) => {
     return mapPromise(req.body.rooms.map(address => {address}), (room => ModelRoom().create(room)))
         .then((rooms: Array<MRoom>) => {
             group.rooms = rooms.map(room => room._id);
+            console.log(group.rooms);
             return ModelGroup().create(group);
         })
         .catch(throwOnIllegalSave)
