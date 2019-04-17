@@ -66,6 +66,6 @@ groupRouter.get("/:gid/rooms", (req, res) => {
     return getById(ModelGroup(), req.params.gid)
                 .then(group => group.getRooms())
                 .then(group => mapPromise(group.rooms, room => room.getUsers()).then(() => group))
-                .then(group => res.json(group.rooms.map(room => ({...room.toJSON(), user: room.users[0] ? null:room.users[0]._id}))))
+                .then(group => res.json(group.rooms.map(room => ({...room.toJSON(), user: room.users[0] ? room.users[0]._id: null}))))
                 .catch(err => handleError(res, err))
 })
