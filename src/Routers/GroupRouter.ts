@@ -14,7 +14,7 @@ groupRouter.use(passport.authenticate("bearer", {session: false}))
 groupRouter.post("/", (req, res) => {
     const group = {
         description: req.body.description,
-        maintainers: req.body.maintainers,
+        maintainers: req.body.maintainers || [],
         rooms: []
     }
 
@@ -23,7 +23,7 @@ groupRouter.post("/", (req, res) => {
         group.maintainers.push(req.user._id);
     }
 
-    return mapPromise(req.body.rooms, (room => ModelRoom().create(room)))
+    return mapPromise(req.body.rooms.map(address => {address}), (room => ModelRoom().create(room)))
         .then(rooms => {
             group.rooms = rooms;
             return ModelGroup().create(group);
