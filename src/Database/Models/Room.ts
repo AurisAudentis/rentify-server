@@ -12,6 +12,7 @@ export interface IRoom {
 export interface MRoom extends IRoom, Document {
     getUsers: () => Promise<MRoom>
     JSONRepr: () => any;
+    _id: string;
 }
 
 const roomSchema = {

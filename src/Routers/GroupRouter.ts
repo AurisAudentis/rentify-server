@@ -1,5 +1,5 @@
 import passport = require("passport");
-import { ModelRoom } from "../Database/Models/Room";
+import { ModelRoom, MRoom } from "../Database/Models/Room";
 import { mapPromise, getById } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelGroup } from "../Database/Models/Group";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
@@ -24,8 +24,8 @@ groupRouter.post("/", (req, res) => {
     }
 
     return mapPromise(req.body.rooms.map(address => {address}), (room => ModelRoom().create(room)))
-        .then(rooms => {
-            group.rooms = rooms;
+        .then((rooms: Array<MRoom>) => {
+            group.rooms = rooms.map(room => room._id);
             return ModelGroup().create(group);
         })
         .catch(throwOnIllegalSave)
