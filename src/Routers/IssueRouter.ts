@@ -43,9 +43,9 @@ issueRouter.post("/group/:gid", (req, res) => {
     }
 
     return getById(ModelGroup(), req.params.gid)
-        .then(group => group.getUsers())
+        .then(group => group.getMaintainers())
         .then(group => group.getJoinedUsers()
-            .then(users => !users.some(id => id.id == req.user.id) && !group.users.some(id => id.id == req.user.id))
+            .then(users => !users.some(id => id.id == req.user.id) && !group.maintainers.some(id => id.id == req.user.id))
             .then(bool => {if(bool) {throw {status: 401, message: "You are not allowed to post issues here."}}})
             .then(() => group)
             )
