@@ -3,6 +3,7 @@ import { IIssue, ModelIssue } from "../Database/Models/Issue";
 import { ModelGroup, MGroup } from "../Database/Models/Group";
 import { getById } from "../Infrastructure/Misc/PromiseHelper";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
+import { read } from "fs";
 
 const express = require('express');
 export const issueRouter = express.Router();
@@ -42,8 +43,9 @@ issueRouter.post("/group/:gid", (req, res) => {
     }
 
     return getById(ModelGroup(), req.params.gid)
+        .then(group => group.getUsers())
         .then(group => group.getJoinedUsers()
-            .then(users => !users.some(id => id.id == req.user.id))
+            .then(users => !users.some(id => id.id == req.user.id) && !group.users.some(id => id.id == req.user.id))
             .then(bool => {if(bool) {throw {status: 401, message: "You are not allowed to post issues here."}}})
             .then(() => group)
             )
