@@ -6,7 +6,7 @@ import { mapPromise, promiselog } from "../../Infrastructure/Misc/PromiseHelper"
 export interface IIssue {
     issue_title: String,
     state: Number,
-    fotos: Array<File>,
+    fotos: Array<string>,
     description: String,
     created_at: Date,
     isPrivate: boolean
@@ -24,7 +24,7 @@ const issueSchema = {
     issue_title: String,
     state: Number,
     isPrivate: Boolean,
-    fotos: [{data: Buffer, contentType: String}],
+    fotos: [String],
     created_at: Date
 }
 

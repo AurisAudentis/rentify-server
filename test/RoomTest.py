@@ -28,3 +28,8 @@ print(r.json())
 r = requests.get("http://localhost:4200/groups", headers= header)
 print(r)
 print(r.json())
+
+
+r = requests.get(f"http://localhost:4200/groups/{gid}/rooms", headers= header)
+print(r)
+print(r.json())

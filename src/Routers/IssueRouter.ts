@@ -3,7 +3,10 @@ import { IIssue, ModelIssue } from "../Database/Models/Issue";
 import { ModelGroup, MGroup } from "../Database/Models/Group";
 import { getById } from "../Infrastructure/Misc/PromiseHelper";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
-import { read } from "fs";
+import {default as multer} from "multer";
+
+const upload = multer({dest: process.cwd() + `/pictures`});
+console.log(process.cwd() + `/pictures`)
 
 const express = require('express');
 export const issueRouter = express.Router();
@@ -54,4 +57,19 @@ issueRouter.post("/group/:gid", (req, res) => {
                     .then(() => res.json(issue))))
 
         .catch(err => handleError(res, err))
+})
+
+
+issueRouter.post("/:id/pictures", upload.single("file"), (req, res) => {
+    getById(ModelIssue(), req.params.id)
+        .then(issue => {
+            issue.fotos.push(req.file.filename);
+            return issue.save();
+        })
+        .then(issue => res.json(issue))
+        .catch(err => handleError(res, err))
+})
+
+issueRouter.get("/:id/pictures/:pid", (req, res) => {
+    res.sendFile("./pictures/" + req.params.pid, {root: process.cwd()});
 })
