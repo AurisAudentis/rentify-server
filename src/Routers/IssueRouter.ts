@@ -1,9 +1,10 @@
 import passport = require("passport");
 import { IIssue, ModelIssue } from "../Database/Models/Issue";
 import { ModelGroup, MGroup } from "../Database/Models/Group";
-import { getById } from "../Infrastructure/Misc/PromiseHelper";
+import { getById, promiselog } from "../Infrastructure/Misc/PromiseHelper";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
 import {default as multer} from "multer";
+import { modelMessage, messageRelationSchema } from "../Database/Models/Message";
 
 const upload = multer({dest: process.cwd() + `/pictures`});
 console.log(process.cwd() + `/pictures`)
@@ -72,4 +73,27 @@ issueRouter.post("/:id/pictures", upload.single("file"), (req, res) => {
 
 issueRouter.get("/:id/pictures/:pid", (req, res) => {
     res.sendFile("./pictures/" + req.params.pid, {root: process.cwd()});
+})
+
+issueRouter.post("/:id/messages", (req, res) => {
+    const message: any = {
+        sentAt: new Date(),
+        text: req.body.text,
+        author: [req.user]
+    }
+
+    modelMessage()
+    .create(message)
+    .then(message => getById(ModelIssue(), req.params.id)
+    .then(promiselog)
+    .then(issue => {issue.messages.push(message); issue.save()}))
+    .then(issue => res.json(issue))
+    .catch(err => handleError(res, err))
+})
+
+issueRouter.get("/:id/messages", (req, res) => {
+    getById(ModelIssue(), req.params.id)
+        .then(issue => issue.getMessages())
+        .then(issue => res.json(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0]}))))
+        .catch(err => handleError(res, err))
 })

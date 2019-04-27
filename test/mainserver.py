@@ -10,10 +10,10 @@ header1 = getHeader(fetchToken("fill@filler.com", "rentify"))
 
 files = {"file": open("test/index.jpg", 'rb')}
 
-r = requests.post(localurl + "/issues/5caca71d6a0ea04048a76604/pictures", headers=header1,files=files )
+r = requests.post(localurl + "/issues/5caca71d6a0ea04048a76604/messages", headers=header1,json={"text":"Some new message, fkn cool."} )
 print(r.text)
 
-r = requests.get(localurl + "/issues/5caca71d6a0ea04048a76604/pictures/46ee8a46e319f8f39e5f5b0394882acd", headers=header1)
+r = requests.get(localurl + "/issues/5caca71d6a0ea04048a76604/messages", headers=header1)
 print(r.text)
 
 # r = requests.get(remote + "/users/landlords", headers=header1)

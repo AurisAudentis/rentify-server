@@ -33,7 +33,8 @@ export const issueRelationSchema: RelationSchema = {
     name: "Issue",
     schema: issueSchema,
     relations: [
-        {subject: "User", fieldlocal: "author", fieldother: "issues", kind: RelationKind.One, delete: DeleteKind.Relation}
+        {subject: "User", fieldlocal: "author", fieldother: "issues", kind: RelationKind.One, delete: DeleteKind.Relation},
+        {subject: "Message", fieldlocal: "messages", fieldother: "issue", kind: RelationKind.Many, delete: DeleteKind.Relation}
     ]
 }
 
