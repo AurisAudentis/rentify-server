@@ -4,6 +4,7 @@ import { handleError } from "../Infrastructure/Misc/ErrorHandler";
 import { promiselog, mapPromise, getById } from "../Infrastructure/Misc/PromiseHelper";
 import { MRoom } from "../Database/Models/Room";
 import { MGroup } from "../Database/Models/Group";
+import { ModelRequest } from "../Database/Models/Request";
 
 const express = require('express');
 export const userRouter = express.Router();
@@ -36,11 +37,21 @@ userRouter.get("/requests", (req, res) =>{
     user.getGroups()
     .then(() => mapPromise(user.groups, group => group.getRooms()))
     .then(promiselog)
-    .then((groups: Array<MGroup>) => groups.map(room => room.rooms).reduce((prev, curr) => prev.concat(curr)).filter(room => !!room))
+    .then((groups: Array<MGroup>) => groups.map(room => room.rooms).reduce((prev, curr) => prev.concat(curr), []).filter(room => !!room))
     .then(promiselog)
     .then((rooms: Array<MRoom>) => mapPromise(rooms, room => room.getRequests()))
     .then((rooms: Array<MRoom>) => rooms.map(room => room.requests))
-    .then(requests => requests.reduce((prev, curr) => prev.concat(curr)))
+    .then(requests => requests.reduce((prev, curr) => prev.concat(curr), []))
     .then(requests => res.json(requests))
     .catch(err => handleError(res, err))
+})
+
+userRouter.put("/requests/:id", (req, res) => {
+    getById(ModelRequest(), req.params.id)
+        .then(request => request.getTenant()
+        .then(() => request.getRoom())
+        .then(() => request.tenant[0].addRoom(request.room[0]))
+        .then(() => request.delete())
+        .then(() => res.json({message:"successfully sent"})))
+        .catch(err => handleError(res, err))
 })
