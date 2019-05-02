@@ -1,6 +1,7 @@
 import { Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
 import { MGroup } from "./Group";
 import { MUser } from "./User";
+import { MRequests } from "./Request";
 
 
 export interface IRoom {
@@ -11,7 +12,9 @@ export interface IRoom {
 
 export interface MRoom extends IRoom, Document {
     getUsers: () => Promise<MRoom>
+    getRequests: () => Promise<MRoom>
     JSONRepr: () => any;
+    requests: Array<Request>
     _id: string;
 }
 

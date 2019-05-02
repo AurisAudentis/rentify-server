@@ -1,7 +1,7 @@
 import { MGroup } from "./Group";
 import { RelationSchema, Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
 import { MUser } from "./User";
-import { mapPromise, promiselog } from "../../Infrastructure/Misc/PromiseHelper";
+import { mapPromise } from "../../Infrastructure/Misc/PromiseHelper";
 
 export interface IIssue {
     issue_title: String,

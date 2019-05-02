@@ -2,6 +2,7 @@ import passport = require("passport");
 import { getById, mapPromise } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelRoom } from "../Database/Models/Room";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
+import { ModelRequest } from "../Database/Models/Request";
 
 const express = require('express');
 export const roomRouter = express.Router();
@@ -16,8 +17,7 @@ roomRouter.post("/:id/users", (req, res) => {
             if(room.users.length > 0) {
                 throw {status: 400, message:"This room is already filled."}
             } else {
-                req.user.rooms.push(room)
-                return req.user.addRoom(room).then(() => room);
+                return ModelRequest().create({tenant: req.user, room:room});
             }
         })
         .then(room => res.json({...room.toJSON(), users: room.users}))

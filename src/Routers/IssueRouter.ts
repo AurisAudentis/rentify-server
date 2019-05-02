@@ -97,3 +97,13 @@ issueRouter.get("/:id/messages", (req, res) => {
         .then(issue => res.json(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0]}))))
         .catch(err => handleError(res, err))
 })
+
+issueRouter.patch("/:id", (req, res) => {
+    getById(ModelIssue(), req.params.id)
+    .then(iss => {
+        iss.status = req.body.status;
+        return iss.save()
+    })
+    .then(iss => res.json(iss))
+    .catch(err => handleError(res, err))
+})
