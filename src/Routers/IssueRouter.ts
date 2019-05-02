@@ -101,7 +101,7 @@ issueRouter.get("/:id/messages", (req, res) => {
 issueRouter.patch("/:id", (req, res) => {
     getById(ModelIssue(), req.params.id)
     .then(iss => {
-        iss.status = req.body.status;
+        iss.state = req.body.state;
         return iss.save()
     })
     .then(iss => res.json(iss))
