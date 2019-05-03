@@ -55,7 +55,7 @@ issueRouter.post("/group/:gid", (req, res) => {
             )
         .then(group => ModelIssue().create(issue)
                     .then(issue => group.addIssue(issue)
-                    .then(() => res.json(issue))))
+                    .then(() => res.json({...issue, author: issue.author._id}))))
 
         .catch(err => handleError(res, err))
 })
@@ -87,7 +87,7 @@ issueRouter.post("/:id/messages", (req, res) => {
     .then(message => getById(ModelIssue(), req.params.id)
     .then(promiselog)
     .then(issue => {issue.messages.push(message); issue.save()}))
-    .then(issue => res.json({...issue, author: issue.author._id}))
+    .then(issue => res.json({issue}))
     .catch(err => handleError(res, err))
 })
 
