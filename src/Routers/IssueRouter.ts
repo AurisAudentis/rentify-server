@@ -55,7 +55,7 @@ issueRouter.post("/group/:gid", (req, res) => {
             )
         .then(group => ModelIssue().create(issue)
                     .then(issue => group.addIssue(issue)
-                    .then(() => res.json({...issue, author: issue.author._id}))))
+                    .then(() => res.json({...issue.toJSON(), author: issue.author._id}))))
 
         .catch(err => handleError(res, err))
 })
