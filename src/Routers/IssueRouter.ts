@@ -96,7 +96,7 @@ issueRouter.get("/:id/messages", (req, res) => {
     getById(ModelIssue(), req.params.id)
         .then(issue => issue.getMessages())
         .then(promiselog)
-        .then(issue => {console.log(issue.author); return issue})
+        .then(issue => {console.log(issue.messages.map(mess => mess.author)); return issue})
         .then(issue => res.json(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id == req.user._id}))))
         .catch(err => handleError(res, err))
 })
