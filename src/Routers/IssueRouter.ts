@@ -92,12 +92,9 @@ issueRouter.post("/:id/messages", (req, res) => {
 })
 
 issueRouter.get("/:id/messages", (req, res) => {
-    console.log(req.user._id)
     getById(ModelIssue(), req.params.id)
         .then(issue => issue.getMessages())
-        .then(promiselog)
-        .then(issue => {console.log(issue.messages.map(mess => mess.author._id == req.user._id)); return issue})
-        .then(issue => res.json(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id == req.user._id}))))
+        .then(issue => res.json(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(req.user._id)}))))
         .catch(err => handleError(res, err))
 })
 
