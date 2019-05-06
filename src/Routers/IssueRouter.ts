@@ -27,14 +27,15 @@ issueRouter.get("/:gid", (req, res) => {
                     })
                     .then(()=>group)
             )
-        .then(promiselog)
-        .then(group => mapPromise(group.issues, issue => issue.getMessagesCorrect(req.user))
-        .then(() => {
+        .then((group) => {
             const byId = {}
-            group.issues.forEach(issue => byId[issue.id] = issue)
+            group.issues.forEach(issue => {
+                issue.messages = [];
+                byId[issue.id] = issue;
+            })
             res.json(byId);
         })
-        .catch(err => handleError(res, err)))
+        .catch(err => handleError(res, err))
 })
 
 issueRouter.post("/group/:gid", (req, res) => {
