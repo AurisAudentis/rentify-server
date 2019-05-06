@@ -55,3 +55,9 @@ userRouter.put("/requests/:id", (req, res) => {
         .then(() => res.json({message:"successfully sent"})))
         .catch(err => handleError(res, err))
 })
+
+userRouter.get("/:id", (req, res) => {
+    getById(ModelUser(), req.params.id)
+        .then(user => res.json(user))
+        .catch(err => handleError(res, err))
+})
