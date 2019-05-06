@@ -11,6 +11,7 @@ export interface IIssue {
     created_at: Date,
     isPrivate: boolean
     groups?: Array<MGroup>,
+    messages?: any,
     author: MUser
 }
 
@@ -41,9 +42,11 @@ export const issueRelationSchema: RelationSchema = {
             const issue = this as MIssue;
 
             return issue.getMessages()
+                .then(() => console.log(issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)}))))
                 .then(issue => issue.messages = issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)})))
+                .then(() => issue)
                 .then(promiselog)
-                
+
         }
     }
 
