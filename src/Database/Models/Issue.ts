@@ -15,7 +15,7 @@ export interface IIssue {
 }
 
 export interface MIssue extends IIssue, Document {
-
+    getMessages: () => any;
     JSONRepr: () => any;
 }
 
@@ -35,7 +35,18 @@ export const issueRelationSchema: RelationSchema = {
     relations: [
         {subject: "User", fieldlocal: "author", fieldother: "issues", kind: RelationKind.One, delete: DeleteKind.Relation},
         {subject: "Message", fieldlocal: "messages", fieldother: "issue", kind: RelationKind.Many, delete: DeleteKind.Relation}
-    ]
+    ],
+    schemafunc: (schema) => {
+        schema.methods.getMessagesCorrect = function(user: MUser) {
+            const issue = this as MIssue;
+
+            return issue.getMessages()
+                .then(issue => mapPromise(issue.messages, mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)}) 
+                    .then(messages => issue.messages = messages)
+                ))
+        }
+    }
+
 }
 
 

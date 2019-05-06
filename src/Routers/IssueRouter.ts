@@ -27,11 +27,10 @@ issueRouter.get("/:gid", (req, res) => {
                     })
                     .then(()=>group)
             )
-        .then(group => mapPromise(group.issues, issue => issue.getMessages())
-        //@ts-ignore
-        .then(issue => issue.messages = issue.messages.map(mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(req.user._id)})))
+        .then(group => mapPromise(group.issues, issue => issue.getMessagesCorrect())
         .then(() => {
             const byId = {}
+            group.issues.forEach(issue => byId[issue.id] = issue)
             res.json(byId);
         })
         .catch(err => handleError(res, err)))

@@ -19,6 +19,7 @@ export interface MUser extends IUser, Document {
     save();
     addRoom(room: MRoom);
     JSONRepr: () => any;
+    _id;
 }
 
 const userSchema = {
