@@ -33,7 +33,7 @@ issueRouter.get("/:gid", (req, res) => {
             group.issues.forEach(issue => byId[issue.id] = issue)
             res.json(byId);
         })
-        .catch(err => handleError(res, err))
+        .catch(err => handleError(res, err)))
 })
 
 issueRouter.post("/group/:gid", (req, res) => {
