@@ -1,7 +1,7 @@
 import passport = require("passport");
 import { IIssue, ModelIssue } from "../Database/Models/Issue";
 import { ModelGroup, MGroup } from "../Database/Models/Group";
-import { getById, promiselog } from "../Infrastructure/Misc/PromiseHelper";
+import { getById, promiselog, mapPromise } from "../Infrastructure/Misc/PromiseHelper";
 import { handleError } from "../Infrastructure/Misc/ErrorHandler";
 import {default as multer} from "multer";
 import { modelMessage, messageRelationSchema } from "../Database/Models/Message";
@@ -27,7 +27,8 @@ issueRouter.get("/:gid", (req, res) => {
                     })
                     .then(()=>group)
             )
-        .then((group) => {
+        .then(group => mapPromise(group.issues, issue => issue.getMessages())
+        .then(() => {
             const byId = {}
             group.issues.forEach(issue => byId[issue.id] = issue)
             res.json(byId);
