@@ -41,9 +41,9 @@ export const issueRelationSchema: RelationSchema = {
             const issue = this as MIssue;
 
             return issue.getMessages()
-                .then(issue => mapPromise(issue.messages, mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)}) 
+                .then(issue => mapPromise(issue.messages, mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)}))
                     .then(messages => issue.messages = messages)
-                ))
+                )
         }
     }
 

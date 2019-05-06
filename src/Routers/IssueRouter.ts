@@ -27,6 +27,7 @@ issueRouter.get("/:gid", (req, res) => {
                     })
                     .then(()=>group)
             )
+        .then(promiselog)
         .then(group => mapPromise(group.issues, issue => issue.getMessagesCorrect(req.user))
         .then(() => {
             const byId = {}
