@@ -1,7 +1,7 @@
 import { MGroup } from "./Group";
 import { RelationSchema, Models, RelationKind, DeleteKind } from "../../Infrastructure/MongoHelper";
 import { MUser } from "./User";
-import { mapPromise } from "../../Infrastructure/Misc/PromiseHelper";
+import { mapPromise, promiselog } from "../../Infrastructure/Misc/PromiseHelper";
 
 export interface IIssue {
     issue_title: String,
@@ -42,6 +42,7 @@ export const issueRelationSchema: RelationSchema = {
 
             return issue.getMessages()
                 .then(issue => mapPromise(issue.messages, mess => ({...mess.toJSON(), author: mess.author[0], you: mess.author[0]._id.equals(user._id)}))
+                    .then(promiselog)
                     .then(messages => issue.messages = messages)
                 )
         }
