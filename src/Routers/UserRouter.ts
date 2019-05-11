@@ -56,6 +56,13 @@ userRouter.put("/requests/:id", (req, res) => {
         .catch(err => handleError(res, err))
 })
 
+userRouter.delete("/requests/:id", (req, res) => {
+    getById(ModelRequest(), req.params.id)
+        .then(request => request.delete())
+        .then(request => res.json(request))
+        .catch(err => handleError(res, err))
+})
+
 userRouter.get("/:id", (req, res) => {
     getById(ModelUser(), req.params.id)
         .then(user => res.json(user))
