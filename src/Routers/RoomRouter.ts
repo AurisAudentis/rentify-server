@@ -50,6 +50,13 @@ roomRouter.get("/", (req, res) => {
         .catch(err => handleError(res, err))
 })
 
+roomRouter.get('/:id', (req, res) => {
+    return getById(ModelRoom(), req.params.id)
+            .then(room => room.getGroups())
+            .then(room => res.json(({...room.toJSON(), group: room.groups[0] ? room.groups[0]._id:null})))
+            .catch(err => handleError(res, err))
+})
+
 // TODO: add validation
 roomRouter.post("/", (req, res) => {
     if(req.body.addresses) {
