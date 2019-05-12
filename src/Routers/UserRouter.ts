@@ -20,7 +20,7 @@ userRouter.get("/", (req, res) => {
 userRouter.get("/landlords", (req, res) => {
     ModelUser().find({})
         .then(users => mapPromise(users, user => user.getGroups()))
-        .then(users => {console.log(users.map(user => user.groups)); return users;})
+        .then(users => {console.log(users.map(user => ({name: user.name,grp: user.groups}))); return users;})
         .then(users => users.filter(user => user.groups.length > 0))
         .then(users => res.json(users))
         .catch(err => handleError(res, err))
