@@ -2,10 +2,11 @@ from AuthTest import fetchToken, getHeader
 import requests
 
 
-header = getHeader(fetchToken("random43@rand.be", "random_password"))
+header = getHeader(fetchToken("fill@filler.com", "rentify"))
 
 
 r = requests.get("http://localhost:4200/rooms/", headers= header)
+print(r.json())
 rid = r.json()[0]["_id"]
 
 r = requests.post("http://localhost:4200/groups", headers=header, json={"description":"Building one", "maintainers": [], "rooms": [{"Address":"New room"}]})
@@ -25,5 +26,10 @@ print(r.json())
 
 
 r = requests.get("http://localhost:4200/groups", headers= header)
+print(r)
+print(r.json())
+
+
+r = requests.get(f"http://localhost:4200/groups/{gid}/rooms", headers= header)
 print(r)
 print(r.json())

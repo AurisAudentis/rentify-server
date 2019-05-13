@@ -1,5 +1,5 @@
 import passport = require("passport");
-import { ModelRoom } from "../Database/Models/Room";
+import { ModelRoom, MRoom, roomRelationSchema } from "../Database/Models/Room";
 import { mapPromise, getById } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelGroup } from "../Database/Models/Group";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
@@ -14,7 +14,7 @@ groupRouter.use(passport.authenticate("bearer", {session: false}))
 groupRouter.post("/", (req, res) => {
     const group = {
         description: req.body.description,
-        maintainers: req.body.maintainers,
+        maintainers: req.body.maintainers || [],
         rooms: []
     }
 
@@ -23,9 +23,10 @@ groupRouter.post("/", (req, res) => {
         group.maintainers.push(req.user._id);
     }
 
-    return mapPromise(req.body.rooms, (room => ModelRoom().create(room)))
-        .then(rooms => {
-            group.rooms = rooms;
+    return mapPromise(req.body.rooms.map(address => ({address})), (room => ModelRoom().create(room)))
+        .then((rooms: Array<MRoom>) => {
+            group.rooms = rooms
+            console.log(group.rooms);
             return ModelGroup().create(group);
         })
         .catch(throwOnIllegalSave)
@@ -58,4 +59,12 @@ groupRouter.get("/", (req, res) => {
             })
         })
         .catch(err => handleError(res, err))
+})
+
+groupRouter.get("/:gid/rooms", (req, res) => {
+    return getById(ModelGroup(), req.params.gid)
+                .then(group => group.getRooms())
+                .then(group => mapPromise(group.rooms, room => room.getUsers()).then(() => group))
+                .then(group => res.json(group.rooms.map(room => ({...room.toJSON(), user: room.users[0] ? room.users[0]._id: null}))))
+                .catch(err => handleError(res, err))
 })

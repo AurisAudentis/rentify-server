@@ -2,6 +2,7 @@ import passport = require("passport");
 import { getById, mapPromise } from "../Infrastructure/Misc/PromiseHelper";
 import { ModelRoom } from "../Database/Models/Room";
 import { handleError, throwOnIllegalSave } from "../Infrastructure/Misc/ErrorHandler";
+import { ModelRequest } from "../Database/Models/Request";
 
 const express = require('express');
 export const roomRouter = express.Router();
@@ -16,8 +17,7 @@ roomRouter.post("/:id/users", (req, res) => {
             if(room.users.length > 0) {
                 throw {status: 400, message:"This room is already filled."}
             } else {
-                req.user.rooms.push(room)
-                return req.user.addRoom(room).then(() => room);
+                return ModelRequest().create({tenant: req.user, room:room});
             }
         })
         .then(room => res.json({...room.toJSON(), users: room.users}))
@@ -43,15 +43,35 @@ roomRouter.delete("/:id/users", (req, res) => {
 })
 
 roomRouter.get("/", (req, res) => {
-    return ModelRoom().find({})
-        .then(rooms => res.json(rooms))
+    return req.user.getRooms()
+        .then(user => mapPromise(user.rooms, room => room.getUsers()))
+        .then(rooms => mapPromise(rooms, room => room.getGroups()))
+        .then(rooms => res.json(rooms.map(room => ({...room.toJSON(), group: room.groups[0] ? room.groups[0]._id:null}))))
         .catch(err => handleError(res, err))
+})
+
+roomRouter.get('/:id', (req, res) => {
+    return getById(ModelRoom(), req.params.id)
+            .then(room => room.getGroups())
+            .then(room => res.json(({...room.toJSON(), group: room.groups[0] ? room.groups[0]._id:null})))
+            .catch(err => handleError(res, err))
 })
 
 // TODO: add validation
 roomRouter.post("/", (req, res) => {
-    return ModelRoom()
-            .create({address: req.body.address})
+    if(req.body.addresses) {
+        return mapPromise(req.body.addresses, address => createRoom(address))
             .then(room => res.send(room))
-            .catchError(err => handleError(res, err))
+            .catch(err => handleError(res, err))
+    } else {
+        return createRoom(req.body.address)
+            .then(room => res.send(room))
+            .catch(err => handleError(res, err))
+    }
+    
 })
+
+function createRoom(address) {
+    return ModelRoom()
+    .create({address: address})
+}

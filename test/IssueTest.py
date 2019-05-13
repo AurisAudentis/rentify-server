@@ -1,8 +1,8 @@
 from AuthTest import fetchToken, getHeader
 import requests
 
-header1 = getHeader(fetchToken("random43@rand.be", "random_password"))
-header2 = getHeader(fetchToken("random45@rand.be", "random_password"))
+header1 = getHeader(fetchToken("fill@filler.com", "rentify"))
+header2 = getHeader(fetchToken("fill@filler.com", "rentify"))
 
 r = requests.get("http://localhost:4200/groups", headers= header1)
 # gidten = r.json()["tenant"][0]["_id"]

@@ -17,6 +17,7 @@ export function throwNoJSON(req, res) {
 }
 
 export function throwOnIllegalSave(err) {
+    console.log(err);
     if(!err.status) {
         throw {status: 400, message:"Your objects are invalid."}
     } else {
